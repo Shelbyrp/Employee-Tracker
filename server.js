@@ -29,15 +29,22 @@ function start(){
             type: "list",
             message: "What would you like to do?",
             choices: [
-                "View all employees",
-                "View all employees by department",
-                "View all employees by manager",
-                "Add employee",
-                "Add Department",
+                "View all Employees",
+                "View Employees by Role",
+                "View Employees by Department",
+                "View Employees by Manager",
+                "View Total Budget by Department",
+                "Update Employee details",
+                "Update Employee Role",
+                "Update Employee Department",
+                "Update Employee's Manager",
+                "Add Employee",
                 "Add Role",
-                "Remove employee",
-                "Update employee role",
-                "Update employee manager"
+                "Add Department",
+                "Delete Employee",
+                "Delete Role",
+                "Delete Department",
+                "Exit"
             ]
         }).then()        
     }
