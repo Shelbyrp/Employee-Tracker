@@ -22,3 +22,8 @@ CREATE TABLE employee (
   role_id INT UNSIGNED NOT NULL,
   manager_id INT UNSIGNED
 );
+
+CREATE TABLE manager(
+  id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+  manager_name VARCHAR(30)
+);
