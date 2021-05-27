@@ -43,7 +43,11 @@ If this project is of interest to you, please contact me with a detailed descrip
 
 https://www.mysql.com/
 
+https://www.npmjs.com/package/mysql
+
 https://www.npmjs.com/package/inquirer
+
+https://www.npmjs.com/package/console.table
 
 ## Tests 
 To ensure that this application is running correctly, run the following command in your bash terminal:
