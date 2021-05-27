@@ -3,12 +3,12 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 ## Description
-This application is called the Employee Tracker and it can be used to manage Employee databases for a company. This application uses an MySQl, Inquirier and node.js..
+This application is called the Employee Tracker and it can be used to manage Employee databases for a company. This application uses an MySQl, Inquirier and node.js.
 
 Link to the video demonstration: [view video](https://youtu.be/ZMuqV7S0u6M). 
 
-![Final result appears as:](./public/assets/img/employeetracker.png)
-![Final result appears as:](./public/assets/img/employeetracker2.png)
+![Final result appears as:](./assets/img/employeetracker.png)
+![Final result appears as:](./assets/img/employeetracker2.png)
 
 
 ## Table of Contents
