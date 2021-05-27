@@ -55,11 +55,11 @@ function start() {
                     break;
                 // View Employees by Role then show the options
                 case "2. View Employees by Role":
-                    var roleT = connection.query(
+                    var temp = connection.query(
                         "SELECT roles.id AS Role_ID, roles.title AS Role_Title, roles.salary AS Role_Salary, roles.department_id AS Role_Dept FROM roles ORDER BY roles.id;",
-                        function (error, roleT) {
+                        function (error, temp) {
                             if (error) throw error;
-                            console.table(roleT);
+                            console.table(temp);
                         }
                     );
                     viewEmployeesByRole().then(start);
@@ -89,7 +89,7 @@ function start() {
                                     choices: function () {
                                         var choiceArray = [];
                                         for (var i = 0; i < result.length; i++) {
-                                            choiceArray.push(result[i].id + " "+ result[i].first_name + " " + result[i].last_name);
+                                            choiceArray.push(result[i].id + " " + result[i].first_name + " " + result[i].last_name);
                                         }
                                         return choiceArray;
                                     },
@@ -116,49 +116,49 @@ function start() {
                                 });
                                 viewEmployees().then(start);
                             });
-                        });
-                        break;
+                    });
+                    break;
 
                 // Update Employee Role then show the options
                 case "7. Update Employee's Manager":
                     connection.query("SELECT * FROM employee", function (err, result) {
                         if (err) throw err;
-                    inquirer
-                        .prompt([
-                            {
-                                name: "employee",
-                                type: "list",
-                                message: "Please select employee",
-                                choices: function () {
-                                    var choiceArray = [];
-                                    for (var i = 0; i < result.length; i++) {
-                                        choiceArray.push(result[i].id + " "+ result[i].first_name + " " + result[i].last_name);
-                                    }
-                                    return choiceArray;
+                        inquirer
+                            .prompt([
+                                {
+                                    name: "employee",
+                                    type: "list",
+                                    message: "Please select employee",
+                                    choices: function () {
+                                        var choiceArray = [];
+                                        for (var i = 0; i < result.length; i++) {
+                                            choiceArray.push(result[i].id + " " + result[i].first_name + " " + result[i].last_name);
+                                        }
+                                        return choiceArray;
+                                    },
                                 },
-                            },
-                            {
-                                name: "managerId",
-                                type: "input",
-                                message: "Please enter manager's id",
-                            },
-                        ])
-                        .then((response) => {
-                            const employee = response.employee;
-                            const employeeString = employee.split(" ");
-                            const employeeId = employeeString[0];
-                            const managerId = response.managerId;
-                            var temp1 =
-                                "UPDATE employee SET manager_id = '" +
-                                managerId +
-                                "' WHERE id= '" +
-                                employeeId +
-                                "'";
-                            var updateRole = connection.query(temp1, (error, updateRole) => {
-                                if (error) throw error;
+                                {
+                                    name: "managerId",
+                                    type: "input",
+                                    message: "Please enter manager's id",
+                                },
+                            ])
+                            .then((response) => {
+                                const employee = response.employee;
+                                const employeeString = employee.split(" ");
+                                const employeeId = employeeString[0];
+                                const managerId = response.managerId;
+                                var temp1 =
+                                    "UPDATE employee SET manager_id = '" +
+                                    managerId +
+                                    "' WHERE id= '" +
+                                    employeeId +
+                                    "'";
+                                var updateRole = connection.query(temp1, (error, updateRole) => {
+                                    if (error) throw error;
+                                });
+                                viewEmployees().then(start);
                             });
-                            viewEmployees().then(start);
-                        });
                     });
                     break;
                 // Add Employee then show the options
@@ -262,6 +262,13 @@ function start() {
                             var add = connection.query(temp, function (error, add) {
                                 if (error) throw error;
                             });
+                            var temp = connection.query(
+                                "SELECT roles.id AS Role_ID, roles.title AS Role_Title, roles.salary AS Role_Salary, roles.department_id AS Role_Dept FROM roles ORDER BY roles.id;",
+                                function (error, temp) {
+                                    if (error) throw error;
+                                    console.table(temp);
+                                }
+                            );
                             viewEmployeesByRole().then(start);
                         });
                     break;
@@ -292,71 +299,122 @@ function start() {
                             var add = connection.query(temp, function (error, add) {
                                 if (error) throw error;
                             });
+                            var temp = connection.query(
+                                "SELECT department.id AS Dept_ID, department.department_name AS Dept FROM department ORDER BY department.id;",
+                                function (error, temp) {
+                                    if (error) throw error;
+                                    console.table(temp);
+                                }
+                            );
                             viewEmployees().then(start);
                         });
                     break;
                 // Delete Employee then show the options
                 case "11. Delete Employee":
-                    inquirer
-                        .prompt([
-                            {
-                                name: "id",
-                                type: "input",
-                                message: "Please enter the Employee id",
-                            },
-                        ])
-                        .then((response) => {
-                            // Removes employee to database
-                            const id = response.id;
-                            var temp = "DELETE FROM employee WHERE id ='" + id + "'";
-                            var add = connection.query(temp, function (error, add) {
-                                if (error) throw error;
+                    connection.query("SELECT * FROM employee", function (err, result) {
+                        if (err) throw err;
+                        inquirer
+                            .prompt([
+                                {
+                                    name: "employee",
+                                    type: "list",
+                                    message: "Please select employee",
+                                    choices: function () {
+                                        var choiceArray = [];
+                                        for (var i = 0; i < result.length; i++) {
+                                            choiceArray.push(result[i].id + " " + result[i].first_name + " " + result[i].last_name);
+                                        }
+                                        return choiceArray;
+                                    },
+                                },
+                            ])
+                            .then((response) => {
+                                // Removes employee to database
+                                const employee = response.employee;
+                                const employeeString = employee.split(" ");
+                                const employeeId = employeeString[0];
+                                var temp = "DELETE FROM employee WHERE id ='" + employeeId + "'";
+                                var add = connection.query(temp, function (error, add) {
+                                    if (error) throw error;
+                                });
+                                viewEmployees().then(start);
                             });
-                            viewEmployees().then(start);
-                        });
+                    });
                     break;
                 // Delete Role then show the options
                 case "12. Delete Role":
+                    connection.query("SELECT * FROM roles", function (err, result) {
+                        if (err) throw err;
                     inquirer
                         .prompt([
                             {
-                                name: "id",
-                                type: "input",
-                                message: "Please enter the Role id",
+                                name: "role",
+                                type: "list",
+                                message: "Please select role",
+                                choices: function () {
+                                    var choiceArray = [];
+                                    for (var i = 0; i < result.length; i++) {
+                                        choiceArray.push(result[i].id + " " + result[i].title);
+                                    }
+                                    return choiceArray;
+                                },
                             },
                         ])
                         .then((response) => {
-                            // Removes employee to database
-                            const id = response.id;
-                            var temp = "DELETE FROM roles WHERE id = '" + id + "'";
+                            // Removes role from database
+                            const role = response.role;
+                            const roleString = role.split(" ");
+                            const roleId = roleString[0];
+                            var temp = "DELETE FROM roles WHERE id = '" + roleId + "'";
                             var add = connection.query(temp, function (error, add) {
                                 if (error) throw error;
                             });
-                            viewEmployees().then(start);
+                            var temp = connection.query(
+                                "SELECT roles.id AS Role_ID, roles.title AS Role_Title, roles.salary AS Role_Salary, roles.department_id AS Role_Dept FROM roles ORDER BY roles.id;",
+                                function (error, temp) {
+                                    if (error) throw error;
+                                    console.table(temp);
+                                }
+                            );
+                            viewEmployeesByRole().then(start);
                         });
+                    });
                     break;
                 // Delete Department then show the options
                 case "13. Delete Department":
+                    connection.query("SELECT * FROM department", function (err, result) {
+                        if (err) throw err;
                     inquirer
                         .prompt([
                             {
-                                name: "id",
-                                type: "input",
-                                message: "Please enter the Role id",
+                                name: "department",
+                                type: "list",
+                                message: "Please select department",
+                                choices: function () {
+                                    var choiceArray = [];
+                                    for (var i = 0; i < result.length; i++) {
+                                        choiceArray.push(result[i].id + " " + result[i].department_name);
+                                    }
+                                    return choiceArray;
+                                },
                             },
                         ])
                         .then((response) => {
                             // Removes employee to database
-                            const id = response.id;
-                            var temp = "DELETE FROM department WHERE id = '" + id + "'";
+                            const department = response.department;
+                            const departmentString = department.split(" ");
+                            const departmentId = departmentString[0];
+                            var temp = "DELETE FROM department WHERE id = '" + departmentId + "'";
                             var add = connection.query(temp, function (error, add) {
                                 if (error) throw error;
                             });
-                            viewEmployees().then(start);
+                            viewEmployeesByDepartment().then(start);
                         });
+                    });
                     break;
                 // Exit if no changes required
                 case "Exit":
+                    console.log("Thank you for using Employee Tracker")
                     break;
             }
         });
@@ -368,7 +426,7 @@ function start() {
 const viewEmployees = () => {
     return new Promise((resolve, reject) => {
         connection.query(
-            "SELECT employee.id, employee.first_name, employee.last_name, roles.title, department.department_name AS department, roles.salary, CONCAT(manager.first_name, ' ', manager.last_name) AS manager FROM employee LEFT JOIN roles on employee.role_id = roles.id LEFT JOIN department on roles.department_id = department.id LEFT JOIN employee manager on manager.id = employee.manager_id;",
+            "SELECT employee.id AS ID, employee.first_name AS First, employee.last_name AS Last, roles.title AS Title, department.department_name AS Dept, roles.salary AS Salary, CONCAT(manager.first_name, ' ', manager.last_name) AS Manager FROM employee LEFT JOIN roles on employee.role_id = roles.id LEFT JOIN department on roles.department_id = department.id LEFT JOIN employee manager on manager.id = employee.manager_id;",
             function (error, employee) {
                 if (error) reject(error);
                 console.table(employee);
@@ -394,7 +452,7 @@ const viewEmployeesByRole = () => {
 const viewEmployeesByDepartment = () => {
     return new Promise((resolve, reject) => {
         connection.query(
-            "SELECT employee.id, employee.first_name, employee.last_name, department.department_name FROM employee LEFT JOIN roles on employee.role_id = roles.id LEFT JOIN department department on roles.department_id = department.id WHERE department.id;",
+            "SELECT employee.id AS ID, employee.first_name AS First, employee.last_name AS Last, department.department_name AS Dept FROM employee LEFT JOIN roles on employee.role_id = roles.id LEFT JOIN department department on roles.department_id = department.id ORDER BY department.id;",
             function (error, results) {
                 if (error) reject(error);
                 console.table(results);
@@ -407,7 +465,7 @@ const viewEmployeesByDepartment = () => {
 const viewEmployeesByManager = () => {
     return new Promise((resolve, reject) => {
         connection.query(
-            "SELECT employee.id AS ID, employee.first_name AS First, employee.last_name AS Last, department.department_name AS Department, employee.manager_id, manager.manager_name AS Manager, roles.title AS Title FROM employee LEFT JOIN manager on manager.id = employee.manager_id LEFT JOIN roles on roles.id = employee.role_id LEFT JOIN department ON department.id = roles.department_id WHERE manager_id;",
+            "SELECT employee.id AS ID, employee.first_name AS First, employee.last_name AS Last, roles.title AS Title, department.department_name AS Department, employee.manager_id, manager.manager_name AS Manager FROM employee LEFT JOIN manager on manager.id = employee.manager_id LEFT JOIN roles on roles.id = employee.role_id LEFT JOIN department ON department.id = roles.department_id WHERE manager_id;",
             function (error, results) {
                 if (error) reject(error);
                 console.table(results);
@@ -420,7 +478,7 @@ const viewEmployeesByManager = () => {
 const viewBudgetByDepartment = () => {
     return new Promise((resolve, reject) => {
         connection.query(
-            "SELECT department_id, department.department_name, SUM(salary) FROM roles LEFT JOIN department on roles.department_id = department.id GROUP BY department_id", // LEFT JOIN department.department.id ON role.department_name = role.department.id",
+            "SELECT department_id AS ID, department.department_name AS Dept, SUM(salary) AS Amount FROM roles LEFT JOIN department on roles.department_id = department.id GROUP BY department_id", // LEFT JOIN department.department.id ON role.department_name = role.department.id",
             function (error, results) {
                 if (error) reject(error);
                 console.table(results);
