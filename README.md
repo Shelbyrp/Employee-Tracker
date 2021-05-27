@@ -3,13 +3,28 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 ## Description
-This application is called the Employee Tracker and it can be used to manage Employee databases for a company. This application uses an MySQl, Inquirier and node.js.
+This application is called the Employee Tracker and it can be used to manage Employee databases for a company. This application uses an MySQl, Inquirier and node.js. 
+
+* It has a built in command-line application that at a minimum allows the user to:
+
+* Add departments, roles, employees
+
+* View departments, roles, employees
+
+* Update employee roles
+
+* Update employee managers
+
+* View employees by manager
+
+* Delete departments, roles, and employees
+
+* View the total utilized budget of a department -- ie the combined salaries of all employees in that department
 
 Link to the video demonstration: [view video](https://youtu.be/ZMuqV7S0u6M). 
 
 ![Final result appears as:](./assets/img/employeetracker.png)
 ![Final result appears as:](./assets/img/employeetracker2.png)
-
 
 ## Table of Contents
 - [Installation](#installation)
